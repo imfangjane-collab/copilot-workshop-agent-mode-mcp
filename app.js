@@ -71,15 +71,18 @@ function getVisibleTodos(todos) {
   return todos;
 }
 
-/** 依篩選結果顯示對應的空狀態文字 */
+/** 依篩選結果顯示對應的空狀態文字；資料還在時要說明是被篩選隱藏，不是被刪除 */
 function getEmptyMessage(todos) {
   if (todos.length === 0) {
     return "還沒有任何待辦事項,新增一個吧!";
   }
   if (currentFilter === "active") {
-    return "太棒了,沒有未完成的事項!";
+    return "目前沒有未完成的事項。項目只是被篩選條件隱藏了，可切回「全部」查看。";
   }
-  return "還沒有已完成的事項。";
+  if (currentFilter === "completed") {
+    return "目前沒有已完成的事項。項目只是被篩選條件隱藏了，不是被刪除，可切回「全部」查看。";
+  }
+  return "還沒有任何待辦事項,新增一個吧!";
 }
 
 /** 重繪清單；未完成數量永遠看整體，不受篩選影響 */
