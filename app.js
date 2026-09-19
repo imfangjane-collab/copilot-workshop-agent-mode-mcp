@@ -7,6 +7,7 @@ const input = document.getElementById("todo-input");
 const listEl = document.getElementById("todo-list");
 const emptyState = document.getElementById("empty-state");
 const remainingCount = document.getElementById("remaining-count");
+const clearCompletedBtn = document.getElementById("clear-completed");
 const filterButtons = document.querySelectorAll(".btn-filter");
 const themeToggle = document.getElementById("theme-toggle");
 const themeIcon = document.getElementById("theme-icon");
@@ -118,6 +119,11 @@ function render(todos) {
 
   const remaining = todos.filter((todo) => !todo.done).length;
   remainingCount.textContent = `未完成:${remaining} 項`;
+
+  // 沒有已完成項目時隱藏按鈕，避免按了沒反應
+  const hasCompleted = todos.some((todo) => todo.done);
+  clearCompletedBtn.hidden = !hasCompleted;
+  clearCompletedBtn.disabled = !hasCompleted;
 }
 
 function setFilter(filter) {
@@ -183,6 +189,24 @@ listEl.addEventListener("click", (event) => {
 
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => setFilter(button.dataset.filter));
+});
+
+clearCompletedBtn.addEventListener("click", () => {
+  const todos = getTodos();
+  const hasCompleted = todos.some((todo) => todo.done);
+  if (!hasCompleted) {
+    return;
+  }
+
+  // 不可逆操作，先請使用者確認
+  const confirmed = window.confirm("確定要清除所有已完成的項目嗎？此操作無法復原。");
+  if (!confirmed) {
+    return;
+  }
+
+  const remainingTodos = todos.filter((todo) => !todo.done);
+  saveTodos(remainingTodos);
+  render(remainingTodos);
 });
 
 themeToggle.addEventListener("click", () => {
