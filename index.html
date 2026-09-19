@@ -9,8 +9,15 @@
 <body>
   <main class="app">
     <header class="app-header">
-      <h1>待辦清單</h1>
-      <p class="subtitle">把今天要做的事記下來</p>
+      <div class="app-title">
+        <h1>待辦清單</h1>
+        <p class="subtitle">把今天要做的事記下來</p>
+      </div>
+      <!-- 淺色時顯示「深色模式」，深色時顯示「淺色模式」 -->
+      <button id="theme-toggle" type="button" class="btn-theme" aria-pressed="false">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-label">深色模式</span>
+      </button>
     </header>
 
     <!-- 新增待辦：輸入框 + 按鈕 -->
@@ -25,7 +32,13 @@
       <button type="submit" class="btn-add">新增</button>
     </form>
 
-    <!-- 清單為空時顯示提示 -->
+    <!-- 篩選：全部 / 未完成 / 已完成 -->
+    <div class="filters" role="group" aria-label="篩選待辦事項">
+      <button type="button" class="btn-filter is-active" data-filter="all" aria-pressed="true">全部</button>
+      <button type="button" class="btn-filter" data-filter="active" aria-pressed="false">未完成</button>
+      <button type="button" class="btn-filter" data-filter="completed" aria-pressed="false">已完成</button>
+    </div>
+
     <p id="empty-state" class="empty-state">還沒有任何待辦事項,新增一個吧!</p>
 
     <ul id="todo-list" class="todo-list" aria-label="待辦事項清單"></ul>

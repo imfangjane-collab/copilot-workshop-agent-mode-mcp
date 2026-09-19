@@ -1,4 +1,4 @@
-/* 顏色與共用尺寸集中定義，方便之後調整主題 */
+/* 淺色主題：顏色集中在變數，深色只覆寫變數值 */
 :root {
   --bg: #eef2f7;
   --surface: #ffffff;
@@ -12,6 +12,44 @@
   --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
   --radius: 16px;
   --done-color: #9ca3af;
+  --filter-active-bg: #2563eb;
+  --filter-active-text: #ffffff;
+}
+
+/* 從未手動切換時，跟隨系統深色設定 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --primary: #60a5fa;
+    --primary-hover: #93c5fd;
+    --danger: #f87171;
+    --danger-hover: #fca5a5;
+    --border: #334155;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --done-color: #64748b;
+    --filter-active-bg: #60a5fa;
+    --filter-active-text: #0f172a;
+  }
+}
+
+/* 使用者手動選擇深色，優先於系統設定 */
+:root[data-theme="dark"] {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --primary: #60a5fa;
+  --primary-hover: #93c5fd;
+  --danger: #f87171;
+  --danger-hover: #fca5a5;
+  --border: #334155;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --done-color: #64748b;
+  --filter-active-bg: #60a5fa;
+  --filter-active-text: #0f172a;
 }
 
 *,
@@ -32,7 +70,6 @@ body {
   padding: 32px 16px;
 }
 
-/* 置中卡片，最大寬度 520px */
 .app {
   width: 100%;
   max-width: 520px;
@@ -42,21 +79,47 @@ body {
   padding: 28px 24px 20px;
 }
 
-.app-header h1 {
+.app-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.app-title h1 {
   margin: 0 0 6px;
   font-size: 1.75rem;
 }
 
 .subtitle {
-  margin: 0 0 20px;
+  margin: 0;
   color: var(--text-muted);
   font-size: 0.95rem;
+}
+
+.btn-theme {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-theme:hover {
+  border-color: var(--primary);
 }
 
 .todo-form {
   display: flex;
   gap: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .todo-form input {
@@ -67,6 +130,8 @@ body {
   border-radius: 10px;
   font-size: 1rem;
   outline: none;
+  background: var(--surface);
+  color: var(--text);
 }
 
 .todo-form input:focus {
@@ -87,6 +152,29 @@ body {
 
 .btn-add:hover {
   background: var(--primary-hover);
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.btn-filter {
+  flex: 1;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-filter.is-active {
+  background: var(--filter-active-bg);
+  color: var(--filter-active-text);
+  border-color: var(--filter-active-bg);
 }
 
 .empty-state {
@@ -130,7 +218,6 @@ body {
   word-break: break-word;
 }
 
-/* 勾選後：刪除線 + 淡化 */
 .todo-item.done .todo-text {
   text-decoration: line-through;
   color: var(--done-color);
@@ -147,7 +234,6 @@ body {
 }
 
 .btn-delete:hover {
-  background: rgba(220, 38, 38, 0.08);
   color: var(--danger-hover);
 }
 
@@ -163,7 +249,6 @@ body {
   margin: 0;
 }
 
-/* 螢幕閱讀器用，視覺上隱藏 */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -176,10 +261,13 @@ body {
   border: 0;
 }
 
-/* 手機螢幕：輸入列改為直向排列 */
 @media (max-width: 420px) {
   .app {
     padding: 22px 16px 16px;
+  }
+
+  .app-header {
+    flex-direction: column;
   }
 
   .todo-form {
