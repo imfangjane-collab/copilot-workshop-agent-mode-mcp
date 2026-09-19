@@ -238,6 +238,10 @@ body {
 }
 
 .app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-top: 16px;
   padding-top: 12px;
   border-top: 1px solid var(--border);
@@ -247,6 +251,25 @@ body {
 
 .app-footer p {
   margin: 0;
+}
+
+.btn-clear {
+  border: 1px solid var(--danger);
+  background: transparent;
+  color: var(--danger);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.btn-clear:hover {
+  color: var(--danger-hover);
+  border-color: var(--danger-hover);
+}
+
+.btn-clear[hidden] {
+  display: none;
 }
 
 .sr-only {
